@@ -35,6 +35,9 @@
           "type": "string"
         }
       }
+    },
+    "isCool": {
+      "type": "boolean"
     }
   },
   "additionalProperties": {

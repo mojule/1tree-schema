@@ -1,15 +1,15 @@
 'use strict'
 
 const assert = require( 'assert' )
-
 const testSchema = require( './fixtures/test.schema.json' )
 
 const { toTree, toJson } = require( '../src' )
 
 describe( '1tree/schema tests', () => {
-  it( 'does not crash lol', () => {
+  it( 'round trips conversion', () => {
     const schemaTree = toTree( testSchema )
+    const schema = toJson( schemaTree )
 
-    console.log( JSON.stringify( schemaTree.serialize(), null, 2 ) )
+    assert.deepEqual( schema, testSchema )
   })
 })
