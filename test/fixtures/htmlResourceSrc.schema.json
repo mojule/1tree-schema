@@ -1,0 +1,10 @@
+{
+  "id": "htmlResourceSrc",
+  "type": "object",
+  "properties": {
+    "src": {
+      "type": "string"
+    }
+  },
+  "required": [ "src" ]
+}
