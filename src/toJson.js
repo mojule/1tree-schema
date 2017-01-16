@@ -3,12 +3,7 @@
 const valueMapper = node => {
   const value = node.value()
 
-  if( value.nodeType !== 'schema' )
-    throw new Error( 'Expected a schema node but found ' + value.nodeType )
-
   const schema = Object.assign( {}, value )
-
-  delete schema.nodeType
 
   if( value.type === 'union' ){
     schema.type = value.typesUnion
@@ -21,6 +16,7 @@ const valueMapper = node => {
   return schema
 }
 
+/*
 const propertyPopulators = {
   property: ( node, schema ) => {
     if( typeof schema.properties !== 'object' )
@@ -95,6 +91,98 @@ const propertyPopulators = {
     schema.not = toJson( child )
   }
 }
+*/
+
+const deleteFromValue = ( node, propertyName ) => {
+  const value = node.value()
+
+  delete value[ propertyName ]
+
+  node.value( value )
+}
+
+const propertyPopulators = {
+  propertyName: ( node, schema ) => {
+    if( typeof schema.properties !== 'object' )
+      schema.properties = {}
+
+    const value = node.value()
+    const { propertyName } = value
+
+    deleteFromValue( node, 'propertyName' )
+
+    schema.properties[ propertyName ] = toJson( node )
+  },
+  propertyPattern: ( node, schema ) => {
+    if( typeof schema.patternProperties !== 'object' )
+      schema.patternProperties = {}
+
+    const value = node.value()
+    const pattern = value.propertyPattern
+
+    deleteFromValue( node, 'propertyPattern' )
+
+    schema.patternProperties[ pattern ] = toJson( node )
+  },
+  additionalPropertiesSchema: ( node, schema ) => {
+    deleteFromValue( node, 'additionalPropertiesSchema' )
+
+    schema.additionalProperties = toJson( node )
+  },
+  arrayItem: ( node, schema ) => {
+    deleteFromValue( node, 'arrayItem' )
+
+    schema.items = toJson( node )
+  },
+  arrayIndex: ( node, schema ) => {
+    if( !Array.isArray( schema.items ))
+      schema.items = []
+
+    const value = node.value()
+    const { arrayIndex } = value
+
+    deleteFromValue( node, 'arrayIndex' )
+
+    schema.items[ arrayIndex ] = toJson( node )
+  },
+  anyOf: ( node, schema ) => {
+    if( !Array.isArray( schema.anyOf ))
+      schema.anyOf = []
+
+    deleteFromValue( node, 'anyOf' )
+
+    const childSchema = toJson( node )
+
+    schema.anyOf.push( childSchema )
+  },
+  allOf: ( node, schema ) => {
+    if( !Array.isArray( schema.allOf ))
+      schema.allOf = []
+
+    deleteFromValue( node, 'allOf' )
+
+    const childSchema = toJson( node )
+
+    schema.allOf.push( childSchema )
+  },
+  oneOf: ( node, schema ) => {
+    if( !Array.isArray( schema.oneOf ))
+      schema.oneOf = []
+
+    deleteFromValue( node, 'oneOf' )
+
+    const childSchema = toJson( node )
+
+    schema.oneOf.push( childSchema )
+  },
+  not: ( node, schema ) => {
+    deleteFromValue( node, 'not' )
+
+    schema.not = toJson( node )
+  }
+}
+
+const populatorProperties = Object.keys( propertyPopulators )
 
 const nestingMapper = node => {
   const schema = valueMapper( node )
@@ -103,10 +191,13 @@ const nestingMapper = node => {
 
   children.forEach( childNode => {
     const value = childNode.value()
-    const nodeType = value.nodeType
-    const populator = propertyPopulators[ nodeType ]
 
-    populator( childNode, schema )
+    const populateFor = populatorProperties.filter( propertyName => propertyName in value )
+
+    populateFor.forEach( propertyName => {
+      const populator = propertyPopulators[ propertyName ]
+      populator( childNode, schema )
+    })
   })
 
   return schema
@@ -125,6 +216,8 @@ const valueMappers = {
 }
 
 const toJson = node => {
+  node = node.clone()
+
   const value = node.value()
   const schemaType = value.type
   const mapper = valueMappers[ schemaType ]

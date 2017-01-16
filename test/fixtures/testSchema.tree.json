@@ -1,6 +1,5 @@
 {
   "value": {
-    "nodeType": "schema",
     "id": "document",
     "type": "object",
     "required": [
@@ -10,15 +9,23 @@
   "children": [
     {
       "value": {
-        "nodeType": "property",
-        "name": "title"
+        "$ref": "nonEmptyString",
+        "type": "any",
+        "propertyName": "title"
+      },
+      "children": []
+    },
+    {
+      "value": {
+        "type": "array",
+        "propertyName": "headStyles"
       },
       "children": [
         {
           "value": {
-            "nodeType": "schema",
-            "$ref": "nonEmptyString",
-            "type": "any"
+            "$ref": "style",
+            "type": "any",
+            "arrayItem": true
           },
           "children": []
         }
@@ -26,232 +33,15 @@
     },
     {
       "value": {
-        "nodeType": "property",
-        "name": "headStyles"
+        "type": "array",
+        "propertyName": "headScripts"
       },
       "children": [
         {
           "value": {
-            "nodeType": "schema",
-            "type": "array"
-          },
-          "children": [
-            {
-              "value": {
-                "nodeType": "items"
-              },
-              "children": [
-                {
-                  "value": {
-                    "nodeType": "schema",
-                    "$ref": "style",
-                    "type": "any"
-                  },
-                  "children": []
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "value": {
-        "nodeType": "property",
-        "name": "headScripts"
-      },
-      "children": [
-        {
-          "value": {
-            "nodeType": "schema",
-            "type": "array"
-          },
-          "children": [
-            {
-              "value": {
-                "nodeType": "items"
-              },
-              "children": [
-                {
-                  "value": {
-                    "nodeType": "schema",
-                    "$ref": "script",
-                    "type": "any"
-                  },
-                  "children": []
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "value": {
-        "nodeType": "property",
-        "name": "scripts"
-      },
-      "children": [
-        {
-          "value": {
-            "nodeType": "schema",
-            "type": "array"
-          },
-          "children": [
-            {
-              "value": {
-                "nodeType": "items"
-              },
-              "children": [
-                {
-                  "value": {
-                    "nodeType": "schema",
-                    "$ref": "script",
-                    "type": "any"
-                  },
-                  "children": []
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "value": {
-        "nodeType": "property",
-        "name": "arrTest"
-      },
-      "children": [
-        {
-          "value": {
-            "nodeType": "schema",
-            "type": "array"
-          },
-          "children": [
-            {
-              "value": {
-                "nodeType": "items"
-              },
-              "children": [
-                {
-                  "value": {
-                    "nodeType": "schema",
-                    "type": "string"
-                  },
-                  "children": []
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "value": {
-        "nodeType": "property",
-        "name": "arrTest2"
-      },
-      "children": [
-        {
-          "value": {
-            "nodeType": "schema",
-            "type": "array"
-          },
-          "children": [
-            {
-              "value": {
-                "nodeType": "itemTuple",
-                "index": 0
-              },
-              "children": [
-                {
-                  "value": {
-                    "nodeType": "schema",
-                    "type": "string"
-                  },
-                  "children": []
-                }
-              ]
-            },
-            {
-              "value": {
-                "nodeType": "itemTuple",
-                "index": 1
-              },
-              "children": [
-                {
-                  "value": {
-                    "nodeType": "schema",
-                    "type": "number"
-                  },
-                  "children": []
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "value": {
-        "nodeType": "property",
-        "name": "multiTypes"
-      },
-      "children": [
-        {
-          "value": {
-            "nodeType": "schema",
-            "type": "union",
-            "typesUnion": [
-              "object",
-              "array"
-            ]
-          },
-          "children": [
-            {
-              "value": {
-                "nodeType": "property",
-                "name": "foo"
-              },
-              "children": [
-                {
-                  "value": {
-                    "nodeType": "schema",
-                    "type": "string"
-                  },
-                  "children": []
-                }
-              ]
-            },
-            {
-              "value": {
-                "nodeType": "items"
-              },
-              "children": [
-                {
-                  "value": {
-                    "nodeType": "schema",
-                    "type": "string"
-                  },
-                  "children": []
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "value": {
-        "nodeType": "property",
-        "name": "isCool"
-      },
-      "children": [
-        {
-          "value": {
-            "nodeType": "schema",
-            "type": "boolean"
+            "$ref": "script",
+            "type": "any",
+            "arrayItem": true
           },
           "children": []
         }
@@ -259,13 +49,15 @@
     },
     {
       "value": {
-        "nodeType": "additionalProperties"
+        "type": "array",
+        "propertyName": "scripts"
       },
       "children": [
         {
           "value": {
-            "nodeType": "schema",
-            "type": "string"
+            "$ref": "script",
+            "type": "any",
+            "arrayItem": true
           },
           "children": []
         }
@@ -273,14 +65,14 @@
     },
     {
       "value": {
-        "nodeType": "patternProperty",
-        "pattern": "^S_"
+        "type": "array",
+        "propertyName": "arrTest"
       },
       "children": [
         {
           "value": {
-            "nodeType": "schema",
-            "type": "string"
+            "type": "string",
+            "arrayItem": true
           },
           "children": []
         }
@@ -288,14 +80,21 @@
     },
     {
       "value": {
-        "nodeType": "patternProperty",
-        "pattern": "^I_"
+        "type": "array",
+        "propertyName": "arrTest2"
       },
       "children": [
         {
           "value": {
-            "nodeType": "schema",
-            "type": "integer"
+            "type": "string",
+            "arrayIndex": 0
+          },
+          "children": []
+        },
+        {
+          "value": {
+            "type": "number",
+            "arrayIndex": 1
           },
           "children": []
         }
@@ -303,13 +102,25 @@
     },
     {
       "value": {
-        "nodeType": "anyOf"
+        "type": "union",
+        "typesUnion": [
+          "object",
+          "array"
+        ],
+        "propertyName": "multiTypes"
       },
       "children": [
         {
           "value": {
-            "nodeType": "schema",
-            "type": "object"
+            "type": "string",
+            "propertyName": "foo"
+          },
+          "children": []
+        },
+        {
+          "value": {
+            "type": "string",
+            "arrayItem": true
           },
           "children": []
         }
@@ -317,87 +128,80 @@
     },
     {
       "value": {
-        "nodeType": "anyOf"
+        "type": "boolean",
+        "propertyName": "isCool"
       },
-      "children": [
-        {
-          "value": {
-            "nodeType": "schema",
-            "type": "any"
-          },
-          "children": []
-        }
-      ]
+      "children": []
     },
     {
       "value": {
-        "nodeType": "allOf"
+        "type": "string",
+        "additionalPropertiesSchema": true
       },
-      "children": [
-        {
-          "value": {
-            "nodeType": "schema",
-            "type": "object"
-          },
-          "children": []
-        }
-      ]
+      "children": []
     },
     {
       "value": {
-        "nodeType": "allOf"
+        "type": "string",
+        "propertyPattern": "^S_"
       },
-      "children": [
-        {
-          "value": {
-            "nodeType": "schema",
-            "type": "any"
-          },
-          "children": []
-        }
-      ]
+      "children": []
     },
     {
       "value": {
-        "nodeType": "oneOf"
+        "type": "integer",
+        "propertyPattern": "^I_"
       },
-      "children": [
-        {
-          "value": {
-            "nodeType": "schema",
-            "type": "object"
-          },
-          "children": []
-        }
-      ]
+      "children": []
     },
     {
       "value": {
-        "nodeType": "oneOf"
+        "type": "object",
+        "anyOf": true
       },
-      "children": [
-        {
-          "value": {
-            "nodeType": "schema",
-            "type": "any"
-          },
-          "children": []
-        }
-      ]
+      "children": []
     },
     {
       "value": {
-        "nodeType": "not"
+        "type": "any",
+        "anyOf": true
       },
-      "children": [
-        {
-          "value": {
-            "nodeType": "schema",
-            "type": "null"
-          },
-          "children": []
-        }
-      ]
+      "children": []
+    },
+    {
+      "value": {
+        "type": "object",
+        "allOf": true
+      },
+      "children": []
+    },
+    {
+      "value": {
+        "type": "any",
+        "allOf": true
+      },
+      "children": []
+    },
+    {
+      "value": {
+        "type": "object",
+        "oneOf": true
+      },
+      "children": []
+    },
+    {
+      "value": {
+        "type": "any",
+        "oneOf": true
+      },
+      "children": []
+    },
+    {
+      "value": {
+        "type": "null",
+        "not": true
+      },
+      "children": []
     }
   ]
 }

@@ -16,7 +16,7 @@ createsNesting.any = createsNesting.object.concat( createsNesting.array )
 createsNesting.union = createsNesting.any
 
 const valueMapper = schema => {
-  const value = Object.assign( { nodeType: 'schema' }, schema )
+  const value = Object.assign( {}, schema )
 
   if( Array.isArray( schema.type )){
     value.type = 'union'
@@ -51,87 +51,57 @@ const nodeValueMappers = {
   any: nestingMapper
 }
 
+const extendValue = ( node, value ) =>
+  node.value( Object.assign( {}, node.value(), value ) )
+
 const createPropertyNode = ( schema, node, propertyName ) => {
-  const value = {
-    nodeType: 'property',
-    name: propertyName
-  }
-
-  const propertyNode = node.createNode( value )
   const propertySchema = schema.properties[ propertyName ]
-  const child = toNode( propertySchema, node )
+  const propertyNode = toNode( propertySchema, node )
 
-  propertyNode.append( child )
+  extendValue( propertyNode, { propertyName } )
 
   return propertyNode
 }
 
 const createAdditionalPropertiesNode = ( schema, node ) => {
-  const value = {
-    nodeType: 'additionalProperties'
-  }
-
-  const additionalPropertiesNode = node.createNode( value )
   const additionalPropertiesSchema = schema.additionalProperties
-  const child = toNode( additionalPropertiesSchema, additionalPropertiesNode )
+  const additionalPropertiesNode = toNode( additionalPropertiesSchema, node )
 
-  additionalPropertiesNode.append( child )
+  extendValue( additionalPropertiesNode, { additionalPropertiesSchema: true } )
 
   return additionalPropertiesNode
 }
 
 const createPatternPropertyNode = ( schema, node, pattern ) => {
-  const value = {
-    nodeType: 'patternProperty',
-    pattern
-  }
-
-  const patternPropertyNode = node.createNode( value )
   const patternPropertySchema = schema.patternProperties[ pattern ]
-  const child = toNode( patternPropertySchema, patternPropertyNode )
+  const patternPropertyNode = toNode( patternPropertySchema, node )
 
-  patternPropertyNode.append( child )
+  extendValue( patternPropertyNode, { propertyPattern: pattern } )
 
   return patternPropertyNode
 }
 
 const createCombiningNode = ( combineSchema, node, combineName ) => {
-  const value = {
-    nodeType: combineName
-  }
+  const combineNode = toNode( combineSchema, node )
 
-  const combineNode = node.createNode( value )
-  const child = toNode( combineSchema, combineNode )
-
-  combineNode.append( child )
+  extendValue( combineNode, { [ combineName ]: true } )
 
   return combineNode
 }
 
 const createItemsNode = ( schema, node ) => {
-  const value = {
-    nodeType: 'items'
-  }
-
-  const itemsNode = node.createNode( value )
   const itemsSchema = schema.items
-  const child = toNode( itemsSchema, itemsNode )
+  const itemsNode = toNode( itemsSchema, node )
 
-  itemsNode.append( child )
+  extendValue( itemsNode, { arrayItem: true } )
 
   return itemsNode
 }
 
 const createItemTupleNode = ( tupleSchema, node, index ) => {
-  const value = {
-    nodeType: 'itemTuple',
-    index
-  }
+  const itemTupleNode = toNode( tupleSchema, node )
 
-  const itemTupleNode = node.createNode( value )
-  const child = toNode( tupleSchema, itemTupleNode )
-
-  itemTupleNode.append( child )
+  extendValue( itemTupleNode, { arrayIndex: index } )
 
   return itemTupleNode
 }

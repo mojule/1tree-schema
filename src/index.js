@@ -2,5 +2,8 @@
 
 const toTree = require( './toTree' )
 const toJson = require( './toJson' )
+const paths = require( './paths' )
 
-module.exports = { toTree, toJson }
+const { pathFromNode, nodeFromPath } = paths
+
+module.exports = { toTree, toJson, pathFromNode, nodeFromPath }

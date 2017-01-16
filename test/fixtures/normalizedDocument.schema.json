@@ -1,0 +1,329 @@
+{
+  "value": {
+    "nodeType": "schema",
+    "id": "document",
+    "type": "object",
+    "required": [
+      "title"
+    ]
+  },
+  "children": [
+    {
+      "value": {
+        "nodeType": "property",
+        "name": "title"
+      },
+      "children": [
+        {
+          "value": {
+            "nodeType": "schema",
+            "type": "string",
+            "id": "nonEmptyString",
+            "pattern": "^(?!\\s*$).+"
+          },
+          "children": []
+        }
+      ]
+    },
+    {
+      "value": {
+        "nodeType": "property",
+        "name": "headStyles"
+      },
+      "children": [
+        {
+          "value": {
+            "nodeType": "schema",
+            "type": "array"
+          },
+          "children": [
+            {
+              "value": {
+                "nodeType": "items"
+              },
+              "children": [
+                {
+                  "value": {
+                    "nodeType": "schema",
+                    "type": "any",
+                    "id": "htmlResource"
+                  },
+                  "children": [
+                    {
+                      "value": {
+                        "nodeType": "oneOf"
+                      },
+                      "children": [
+                        {
+                          "value": {
+                            "nodeType": "schema",
+                            "type": "object",
+                            "id": "htmlResourceText",
+                            "required": [
+                              "text"
+                            ]
+                          },
+                          "children": [
+                            {
+                              "value": {
+                                "nodeType": "property",
+                                "name": "text"
+                              },
+                              "children": [
+                                {
+                                  "value": {
+                                    "nodeType": "schema",
+                                    "type": "string"
+                                  },
+                                  "children": []
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "value": {
+                        "nodeType": "oneOf"
+                      },
+                      "children": [
+                        {
+                          "value": {
+                            "nodeType": "schema",
+                            "type": "object",
+                            "id": "htmlResourceSrc",
+                            "required": [
+                              "src"
+                            ]
+                          },
+                          "children": [
+                            {
+                              "value": {
+                                "nodeType": "property",
+                                "name": "src"
+                              },
+                              "children": [
+                                {
+                                  "value": {
+                                    "nodeType": "schema",
+                                    "type": "string"
+                                  },
+                                  "children": []
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "value": {
+        "nodeType": "property",
+        "name": "headScripts"
+      },
+      "children": [
+        {
+          "value": {
+            "nodeType": "schema",
+            "type": "array"
+          },
+          "children": [
+            {
+              "value": {
+                "nodeType": "items"
+              },
+              "children": [
+                {
+                  "value": {
+                    "nodeType": "schema",
+                    "type": "any",
+                    "id": "htmlResource"
+                  },
+                  "children": [
+                    {
+                      "value": {
+                        "nodeType": "oneOf"
+                      },
+                      "children": [
+                        {
+                          "value": {
+                            "nodeType": "schema",
+                            "type": "object",
+                            "id": "htmlResourceText",
+                            "required": [
+                              "text"
+                            ]
+                          },
+                          "children": [
+                            {
+                              "value": {
+                                "nodeType": "property",
+                                "name": "text"
+                              },
+                              "children": [
+                                {
+                                  "value": {
+                                    "nodeType": "schema",
+                                    "type": "string"
+                                  },
+                                  "children": []
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "value": {
+                        "nodeType": "oneOf"
+                      },
+                      "children": [
+                        {
+                          "value": {
+                            "nodeType": "schema",
+                            "type": "object",
+                            "id": "htmlResourceSrc",
+                            "required": [
+                              "src"
+                            ]
+                          },
+                          "children": [
+                            {
+                              "value": {
+                                "nodeType": "property",
+                                "name": "src"
+                              },
+                              "children": [
+                                {
+                                  "value": {
+                                    "nodeType": "schema",
+                                    "type": "string"
+                                  },
+                                  "children": []
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "value": {
+        "nodeType": "property",
+        "name": "scripts"
+      },
+      "children": [
+        {
+          "value": {
+            "nodeType": "schema",
+            "type": "array"
+          },
+          "children": [
+            {
+              "value": {
+                "nodeType": "items"
+              },
+              "children": [
+                {
+                  "value": {
+                    "nodeType": "schema",
+                    "type": "any",
+                    "id": "htmlResource"
+                  },
+                  "children": [
+                    {
+                      "value": {
+                        "nodeType": "oneOf"
+                      },
+                      "children": [
+                        {
+                          "value": {
+                            "nodeType": "schema",
+                            "type": "object",
+                            "id": "htmlResourceText",
+                            "required": [
+                              "text"
+                            ]
+                          },
+                          "children": [
+                            {
+                              "value": {
+                                "nodeType": "property",
+                                "name": "text"
+                              },
+                              "children": [
+                                {
+                                  "value": {
+                                    "nodeType": "schema",
+                                    "type": "string"
+                                  },
+                                  "children": []
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "value": {
+                        "nodeType": "oneOf"
+                      },
+                      "children": [
+                        {
+                          "value": {
+                            "nodeType": "schema",
+                            "type": "object",
+                            "id": "htmlResourceSrc",
+                            "required": [
+                              "src"
+                            ]
+                          },
+                          "children": [
+                            {
+                              "value": {
+                                "nodeType": "property",
+                                "name": "src"
+                              },
+                              "children": [
+                                {
+                                  "value": {
+                                    "nodeType": "schema",
+                                    "type": "string"
+                                  },
+                                  "children": []
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
