@@ -1,9 +1,0 @@
-{
-  "id": "componentConfig",
-  "type": "object",
-  "properties": {
-    "containerSelector": {
-      "$ref": "nonEmptyString"
-    }
-  }
-}

@@ -192,8 +192,6 @@ const toNode = ( schema, parent ) => {
   const schemaType = typeof schema.type === 'string' ? schema.type : 'any'
   const valueMapper = nodeValueMappers[ schemaType ]
   const value = valueMapper( schema )
-
-
   const node = create( value )
 
   if( containerNodeTypes.includes( schemaType ) ){

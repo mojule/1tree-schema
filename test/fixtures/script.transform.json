@@ -1,5 +1,0 @@
-{
-  "src": {
-    "attr": [ "src", { "$value": "src" } ]
-  }
-}

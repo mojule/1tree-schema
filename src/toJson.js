@@ -16,83 +16,6 @@ const valueMapper = node => {
   return schema
 }
 
-/*
-const propertyPopulators = {
-  property: ( node, schema ) => {
-    if( typeof schema.properties !== 'object' )
-      schema.properties = {}
-
-    const value = node.value()
-    const propertyName = value.name
-    const child = node.firstChild()
-
-    schema.properties[ propertyName ] = toJson( child )
-  },
-  patternProperty: ( node, schema ) => {
-    if( typeof schema.patternProperties !== 'object' )
-      schema.patternProperties = {}
-
-    const value = node.value()
-    const pattern = value.pattern
-    const child = node.firstChild()
-
-    schema.patternProperties[ pattern ] = toJson( child )
-  },
-  additionalProperties: ( node, schema ) => {
-    const child = node.firstChild()
-
-    schema.additionalProperties = toJson( child )
-  },
-  items: ( node, schema ) => {
-    const child = node.firstChild()
-
-    schema.items = toJson( child )
-  },
-  itemTuple: ( node, schema ) => {
-    if( !Array.isArray( schema.items ))
-      schema.items = []
-
-    const value = node.value()
-    const index = value.index
-    const child = node.firstChild()
-
-    schema.items[ index ] = toJson( child )
-  },
-  anyOf: ( node, schema ) => {
-    if( !Array.isArray( schema.anyOf ))
-      schema.anyOf = []
-
-    const child = node.firstChild()
-    const childSchema = toJson( child )
-
-    schema.anyOf.push( childSchema )
-  },
-  allOf: ( node, schema ) => {
-    if( !Array.isArray( schema.allOf ))
-      schema.allOf = []
-
-    const child = node.firstChild()
-    const childSchema = toJson( child )
-
-    schema.allOf.push( childSchema )
-  },
-  oneOf: ( node, schema ) => {
-    if( !Array.isArray( schema.oneOf ))
-      schema.oneOf = []
-
-    const child = node.firstChild()
-    const childSchema = toJson( child )
-
-    schema.oneOf.push( childSchema )
-  },
-  not: ( node, schema ) => {
-    const child = node.firstChild()
-
-    schema.not = toJson( child )
-  }
-}
-*/
-
 const deleteFromValue = ( node, propertyName ) => {
   const value = node.value()
 
@@ -196,6 +119,7 @@ const nestingMapper = node => {
 
     populateFor.forEach( propertyName => {
       const populator = propertyPopulators[ propertyName ]
+
       populator( childNode, schema )
     })
   })

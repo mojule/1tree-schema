@@ -28,6 +28,8 @@ const pathFromNode = node => {
     return parentPath + '/' + slug
 }
 
+// this is easy but inefficent, it's very simple to use the path segments to
+// traverse the tree, replace!
 const nodeFromPath = ( schemaTree, path ) =>
   schemaTree.find( node => path === pathFromNode( node ) )
 

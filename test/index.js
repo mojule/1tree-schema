@@ -3,7 +3,7 @@
 const assert = require( 'assert' )
 const testSchema = require( './fixtures/test.schema.json' )
 
-const { toTree, toJson, pathFromNode, nodeFromPath } = require( '../src' )
+const { toTree, toJson, pathFromNode, nodeFromPath } = require( '../dist' )
 
 describe( '1tree/schema tests', () => {
   it( 'round trips conversion', () => {
