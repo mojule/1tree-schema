@@ -19,10 +19,12 @@ var pathFromNode = function pathFromNode(node) {
 
   if (!parentWithSlug) return '$';
 
-  var parentPath = pathFromNode(parentWithSlug);
+  var nodePath = pathFromNode(parentWithSlug);
   var slug = slugFromNode(node);
 
-  if (slug) return parentPath + '/' + slug;
+  if (slug) nodePath += '/' + slug;
+
+  return nodePath;
 };
 
 // this is easy but inefficent, it's very simple to use the path segments to

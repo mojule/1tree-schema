@@ -21,11 +21,13 @@ const pathFromNode = node => {
   if( !parentWithSlug )
     return '$'
 
-  const parentPath = pathFromNode( parentWithSlug )
+  let nodePath = pathFromNode( parentWithSlug )
   const slug = slugFromNode( node )
 
   if( slug )
-    return parentPath + '/' + slug
+    nodePath += '/' + slug
+
+  return nodePath
 }
 
 // this is easy but inefficent, it's very simple to use the path segments to
