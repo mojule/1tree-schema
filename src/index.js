@@ -1,9 +1,11 @@
 'use strict'
 
-const toTree = require( './toTree' )
-const toJson = require( './toJson' )
-const paths = require( './paths' )
+const TreeFactory = require( '1tree-factory' )
+const plugins = require( './plugins' )
+const createTree = require( './plugins/createTree' )
 
-const { pathFromNode, nodeFromPath } = paths
+const SchemaTree = TreeFactory( ...plugins )
 
-module.exports = { toTree, toJson, pathFromNode, nodeFromPath }
+SchemaTree.plugin( createTree )
+
+module.exports = SchemaTree

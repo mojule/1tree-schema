@@ -1,5 +1,7 @@
 'use strict'
 
+// see comment in fromSchema
+
 const valueMapper = node => {
   const value = node.value()
 
@@ -149,4 +151,21 @@ const toJson = node => {
   return mapper( node )
 }
 
-module.exports = toJson
+const toSchemaPlugin = fn => {
+  const toSchema = ( fn, node ) => {
+    const wrappedNode = fn.createTree( node )
+
+    return toJson( wrappedNode )
+  }
+
+  toSchema.def = {
+    argTypes: [ 'fn', 'node' ],
+    returnType: 'object',
+    requires: [ 'createTree' ],
+    categories: [ 'plugin' ]
+  }
+
+  return Object.assign( fn, { toSchema } )
+}
+
+module.exports = toSchemaPlugin

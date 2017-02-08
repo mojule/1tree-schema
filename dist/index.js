@@ -1,11 +1,13 @@
 'use strict';
 
-var toTree = require('./toTree');
-var toJson = require('./toJson');
-var paths = require('./paths');
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
-var pathFromNode = paths.pathFromNode,
-    nodeFromPath = paths.nodeFromPath;
+var TreeFactory = require('1tree-factory');
+var plugins = require('./plugins');
+var createTree = require('./plugins/createTree');
 
+var SchemaTree = TreeFactory.apply(undefined, _toConsumableArray(plugins));
 
-module.exports = { toTree: toTree, toJson: toJson, pathFromNode: pathFromNode, nodeFromPath: nodeFromPath };
+SchemaTree.plugin(createTree);
+
+module.exports = SchemaTree;

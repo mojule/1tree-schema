@@ -6,6 +6,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 var Tree = require('1tree');
 
+/*
+  We're going to cheat slightly and sacrifice some performance for the sake of
+  dev time by just using the default tree and then wrapping that in a plugin,
+  because I'm tired and there's a lot to do.
+*/
+
 var createsNesting = {
   object: ['properties', 'additionalProperties', 'definitions', 'patternProperties', 'dependencies', 'allOf', 'anyOf', 'oneOf', 'not'],
   array: ['items']
@@ -205,4 +211,21 @@ var toTree = function toTree(schema) {
   return toNode(schema, null);
 };
 
-module.exports = toTree;
+var fromSchemaPlugin = function fromSchemaPlugin(fn) {
+  var fromSchema = function fromSchema(fn, schema) {
+    var treeNode = toTree(schema);
+
+    return treeNode.get();
+  };
+
+  fromSchema.def = {
+    argTypes: ['fn', 'object'],
+    returnType: 'node',
+    requires: ['createTree'],
+    categories: ['plugin']
+  };
+
+  return Object.assign(fn, { fromSchema: fromSchema });
+};
+
+module.exports = fromSchemaPlugin;

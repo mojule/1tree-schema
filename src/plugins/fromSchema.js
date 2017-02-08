@@ -2,6 +2,12 @@
 
 const Tree = require( '1tree' )
 
+/*
+  We're going to cheat slightly and sacrifice some performance for the sake of
+  dev time by just using the default tree and then wrapping that in a plugin,
+  because I'm tired and there's a lot to do.
+*/
+
 const createsNesting = {
   object: [
     'properties', 'additionalProperties', 'definitions', 'patternProperties',
@@ -205,4 +211,21 @@ const toNode = ( schema, parent ) => {
 
 const toTree = schema => toNode( schema, null )
 
-module.exports = toTree
+const fromSchemaPlugin = fn => {
+  const fromSchema = ( fn, schema ) => {
+    const treeNode = toTree( schema )
+
+    return treeNode.get()
+  }
+
+  fromSchema.def = {
+    argTypes: [ 'fn', 'object' ],
+    returnType: 'node',
+    requires: [ 'createTree' ],
+    categories: [ 'plugin' ]
+  }
+
+  return Object.assign( fn, { fromSchema } )
+}
+
+module.exports = fromSchemaPlugin

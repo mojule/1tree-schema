@@ -1,5 +1,7 @@
 'use strict';
 
+// see comment in fromSchema
+
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 var valueMapper = function valueMapper(node) {
@@ -149,4 +151,21 @@ var toJson = function toJson(node) {
   return mapper(node);
 };
 
-module.exports = toJson;
+var toSchemaPlugin = function toSchemaPlugin(fn) {
+  var toSchema = function toSchema(fn, node) {
+    var wrappedNode = fn.createTree(node);
+
+    return toJson(wrappedNode);
+  };
+
+  toSchema.def = {
+    argTypes: ['fn', 'node'],
+    returnType: 'object',
+    requires: ['createTree'],
+    categories: ['plugin']
+  };
+
+  return Object.assign(fn, { toSchema: toSchema });
+};
+
+module.exports = toSchemaPlugin;
