@@ -6,17 +6,10 @@ const slugPlugin = fn => {
   const slug = ( fn, root, node ) => {
     if( root === node ) return ''
 
-    const parent = fn.getParent( fn, root, node )
-    const nodeType = fn.nodeType( fn, parent )
+    const value = fn.value( node )
+    const { propertyName } = value
 
-    if( nodeType === 'object' ){
-      const value = fn.value( node )
-      const { propertyName } = value
-
-      return propertyName
-    }
-
-    return originalSlug( fn, root, node )
+    return propertyName || originalSlug( fn, root, node )
   }
 
   slug.def = originalSlug.def
