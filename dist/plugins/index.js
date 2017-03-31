@@ -1,8 +1,8 @@
 'use strict';
 
+var isValue = require('./isValue');
 var fromSchema = require('./fromSchema');
 var toSchema = require('./toSchema');
 var slug = require('./slug');
-var treeType = require('./treeType');
 
-module.exports = [fromSchema, toSchema, slug, treeType];
+module.exports = [isValue, fromSchema, toSchema, slug];

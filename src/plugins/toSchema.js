@@ -36,7 +36,7 @@ const propertyPopulators = {
 
     deleteFromValue( node, 'propertyName' )
 
-    schema.properties[ propertyName ] = toJson( node )
+    schema.properties[ propertyName ] = toSchema( node )
   },
   propertyPattern: ( node, schema ) => {
     if( typeof schema.patternProperties !== 'object' )
@@ -47,17 +47,17 @@ const propertyPopulators = {
 
     deleteFromValue( node, 'propertyPattern' )
 
-    schema.patternProperties[ pattern ] = toJson( node )
+    schema.patternProperties[ pattern ] = toSchema( node )
   },
   additionalPropertiesSchema: ( node, schema ) => {
     deleteFromValue( node, 'additionalPropertiesSchema' )
 
-    schema.additionalProperties = toJson( node )
+    schema.additionalProperties = toSchema( node )
   },
   arrayItem: ( node, schema ) => {
     deleteFromValue( node, 'arrayItem' )
 
-    schema.items = toJson( node )
+    schema.items = toSchema( node )
   },
   arrayIndex: ( node, schema ) => {
     if( !Array.isArray( schema.items ))
@@ -68,7 +68,7 @@ const propertyPopulators = {
 
     deleteFromValue( node, 'arrayIndex' )
 
-    schema.items[ arrayIndex ] = toJson( node )
+    schema.items[ arrayIndex ] = toSchema( node )
   },
   anyOf: ( node, schema ) => {
     if( !Array.isArray( schema.anyOf ))
@@ -76,7 +76,7 @@ const propertyPopulators = {
 
     deleteFromValue( node, 'anyOf' )
 
-    const childSchema = toJson( node )
+    const childSchema = toSchema( node )
 
     schema.anyOf.push( childSchema )
   },
@@ -86,7 +86,7 @@ const propertyPopulators = {
 
     deleteFromValue( node, 'allOf' )
 
-    const childSchema = toJson( node )
+    const childSchema = toSchema( node )
 
     schema.allOf.push( childSchema )
   },
@@ -96,14 +96,14 @@ const propertyPopulators = {
 
     deleteFromValue( node, 'oneOf' )
 
-    const childSchema = toJson( node )
+    const childSchema = toSchema( node )
 
     schema.oneOf.push( childSchema )
   },
   not: ( node, schema ) => {
     deleteFromValue( node, 'not' )
 
-    schema.not = toJson( node )
+    schema.not = toSchema( node )
   }
 }
 
@@ -141,7 +141,7 @@ const valueMappers = {
   null: valueMapper
 }
 
-const toJson = node => {
+const toSchema = node => {
   node = node.clone()
 
   const value = node.value()
@@ -151,21 +151,10 @@ const toJson = node => {
   return mapper( node )
 }
 
-const toSchemaPlugin = fn => {
-  const toSchema = ( fn, node ) => {
-    const wrappedNode = fn.createTree( node )
-
-    return toJson( wrappedNode )
+const toSchemaPlugin = node => {
+  return {
+    toSchema: () => toSchema( node )
   }
-
-  toSchema.def = {
-    argTypes: [ 'fn', 'node' ],
-    returnType: 'object',
-    requires: [ 'createTree' ],
-    categories: [ 'plugin' ]
-  }
-
-  return Object.assign( fn, { toSchema } )
 }
 
 module.exports = toSchemaPlugin

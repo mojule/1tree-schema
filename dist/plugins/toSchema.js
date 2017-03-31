@@ -38,7 +38,7 @@ var propertyPopulators = {
 
     deleteFromValue(node, 'propertyName');
 
-    schema.properties[propertyName] = toJson(node);
+    schema.properties[propertyName] = _toSchema(node);
   },
   propertyPattern: function propertyPattern(node, schema) {
     if (_typeof(schema.patternProperties) !== 'object') schema.patternProperties = {};
@@ -48,17 +48,17 @@ var propertyPopulators = {
 
     deleteFromValue(node, 'propertyPattern');
 
-    schema.patternProperties[pattern] = toJson(node);
+    schema.patternProperties[pattern] = _toSchema(node);
   },
   additionalPropertiesSchema: function additionalPropertiesSchema(node, schema) {
     deleteFromValue(node, 'additionalPropertiesSchema');
 
-    schema.additionalProperties = toJson(node);
+    schema.additionalProperties = _toSchema(node);
   },
   arrayItem: function arrayItem(node, schema) {
     deleteFromValue(node, 'arrayItem');
 
-    schema.items = toJson(node);
+    schema.items = _toSchema(node);
   },
   arrayIndex: function arrayIndex(node, schema) {
     if (!Array.isArray(schema.items)) schema.items = [];
@@ -69,14 +69,14 @@ var propertyPopulators = {
 
     deleteFromValue(node, 'arrayIndex');
 
-    schema.items[arrayIndex] = toJson(node);
+    schema.items[arrayIndex] = _toSchema(node);
   },
   anyOf: function anyOf(node, schema) {
     if (!Array.isArray(schema.anyOf)) schema.anyOf = [];
 
     deleteFromValue(node, 'anyOf');
 
-    var childSchema = toJson(node);
+    var childSchema = _toSchema(node);
 
     schema.anyOf.push(childSchema);
   },
@@ -85,7 +85,7 @@ var propertyPopulators = {
 
     deleteFromValue(node, 'allOf');
 
-    var childSchema = toJson(node);
+    var childSchema = _toSchema(node);
 
     schema.allOf.push(childSchema);
   },
@@ -94,14 +94,14 @@ var propertyPopulators = {
 
     deleteFromValue(node, 'oneOf');
 
-    var childSchema = toJson(node);
+    var childSchema = _toSchema(node);
 
     schema.oneOf.push(childSchema);
   },
   not: function not(node, schema) {
     deleteFromValue(node, 'not');
 
-    schema.not = toJson(node);
+    schema.not = _toSchema(node);
   }
 };
 
@@ -141,7 +141,7 @@ var valueMappers = {
   null: valueMapper
 };
 
-var toJson = function toJson(node) {
+var _toSchema = function _toSchema(node) {
   node = node.clone();
 
   var value = node.value();
@@ -151,21 +151,12 @@ var toJson = function toJson(node) {
   return mapper(node);
 };
 
-var toSchemaPlugin = function toSchemaPlugin(fn) {
-  var toSchema = function toSchema(fn, node) {
-    var wrappedNode = fn.createTree(node);
-
-    return toJson(wrappedNode);
+var toSchemaPlugin = function toSchemaPlugin(node) {
+  return {
+    toSchema: function toSchema() {
+      return _toSchema(node);
+    }
   };
-
-  toSchema.def = {
-    argTypes: ['fn', 'node'],
-    returnType: 'object',
-    requires: ['createTree'],
-    categories: ['plugin']
-  };
-
-  return Object.assign(fn, { toSchema: toSchema });
 };
 
 module.exports = toSchemaPlugin;

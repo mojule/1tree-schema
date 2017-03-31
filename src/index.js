@@ -1,11 +1,21 @@
 'use strict'
 
-const TreeFactory = require( '1tree-factory' )
+const is = require( '@mojule/is' )
+const TreeFactory = require( '@mojule/tree' ).Factory
 const plugins = require( './plugins' )
-const createTree = require( './plugins/createTree' )
 
-const SchemaTree = TreeFactory( ...plugins )
+const Tree = TreeFactory( plugins )
 
-SchemaTree.plugin( createTree )
+const SchemaTree = value => {
+  if( is.undefined( value ) )
+    throw new Error( 'SchemaTree requires a raw node, value, or valid JSON object' )
+
+  if( Tree.isValue( value ) || Tree.isNode( value ) )
+    return Tree( value )
+
+  return Tree.fromSchema( value )
+}
+
+Object.assign( SchemaTree, Tree )
 
 module.exports = SchemaTree

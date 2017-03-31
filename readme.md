@@ -1,9 +1,15 @@
-# 1tree-schema
+# schema-tree
 
-Converts JSON schema to and from 1tree instances
+Use [tree](https://github.com/mojule/tree) API over JSON Schema
+
+## Install
+
+`npm install @mojule/schema-tree`
+
+## Example
 
 ```javascript
-const SchemaTree = require( '1tree-schema' )
+const SchemaTree = require( '@mojule/schema-tree' )
 const jsonSchema = require( './test.schema.json' )
 
 const tree = SchemaTree( jsonSchema )
@@ -11,11 +17,7 @@ const tree = SchemaTree( jsonSchema )
 const integerNodes = tree.findAll( n => n.nodeType() === 'integer' )
 
 integerNodes.forEach( n => {
-  const value = n.value()
-
-  value.minimum = 1
-
-  n.value( value )
+  n.setValue( 'minimum', 1 )
 })
 
 const newSchema = tree.toSchema()
