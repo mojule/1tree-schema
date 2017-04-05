@@ -2,18 +2,45 @@
 
 var is = require('@mojule/is');
 var TreeFactory = require('@mojule/tree').Factory;
-var plugins = require('./plugins');
+var defaultPlugins = require('./plugins');
 
-var Tree = TreeFactory(plugins);
+var parseState = function parseState(Tree, value) {
+  if (Tree.isValue(value) || Tree.isNode(value) || Tree.isState(value)) return;
 
-var SchemaTree = function SchemaTree(value) {
-  if (is.undefined(value)) throw new Error('SchemaTree requires a raw node, value, or valid JSON object');
+  if (!is.undefined(value)) {
+    var node = Tree.fromSchema(value);
+    var rawNode = node.get();
 
-  if (Tree.isValue(value) || Tree.isNode(value)) return Tree(value);
-
-  return Tree.fromSchema(value);
+    return { node: rawNode, parent: null, root: rawNode };
+  }
 };
 
-Object.assign(SchemaTree, Tree);
+var defaultStateParsers = [parseState];
+
+var Factory = function Factory() {
+  for (var _len = arguments.length, plugins = Array(_len), _key = 0; _key < _len; _key++) {
+    plugins[_key] = arguments[_key];
+  }
+
+  var options = {};
+
+  if (plugins.length > 0 && is.object(plugins[plugins.length - 1])) options = plugins.pop();
+
+  if (plugins.length === 1 && is.array(plugins[0])) plugins = plugins[0];
+
+  plugins = defaultPlugins.concat(plugins);
+
+  if (is.array(options.stateParsers)) {
+    options.stateParsers = options.stateParsers.concat(defaultStateParsers);
+  } else {
+    options.stateParsers = defaultStateParsers;
+  }
+
+  return TreeFactory(plugins, options);
+};
+
+var SchemaTree = Factory();
+
+Object.assign(SchemaTree, { Factory: Factory });
 
 module.exports = SchemaTree;

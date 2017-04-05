@@ -38,6 +38,13 @@
     },
     "isCool": {
       "type": "boolean"
+    },
+    "hasAdditionalProperties": {
+      "type": "object",
+      "properties": {
+        "number": { "type": "number" }
+      },
+      "additionalProperties": false
     }
   },
   "additionalProperties": {
