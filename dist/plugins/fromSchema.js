@@ -27,7 +27,7 @@ var fromSchemaModule = function fromSchemaModule(node) {
   };
 
   var Node = function Node(value) {
-    var rawNode = node.createNode(value);
+    var rawNode = node.createRawNode(value);
 
     var state = {
       root: rawNode,
