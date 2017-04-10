@@ -21,7 +21,7 @@ const fromSchemaModule = node => {
   }
 
   const Node = value => {
-    const rawNode = node.createNode( value )
+    const rawNode = node.createRawNode( value )
 
     const state = {
       root: rawNode,

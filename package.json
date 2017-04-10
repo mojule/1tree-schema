@@ -32,7 +32,7 @@
   },
   "dependencies": {
     "@mojule/is": "^0.1.2",
-    "@mojule/tree": "^0.6.1",
+    "@mojule/tree": "^0.6.2",
     "@mojule/utils": "^0.1.10"
   }
 }
