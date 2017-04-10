@@ -81,17 +81,25 @@ describe( 'Factory', () => {
     assert.equal( tree.x(), 'x' )
   })
 
-  it( 'Takes stateParsers', () => {
-    const parser = ( Tree, value ) => {
-      if( is.undefined( value ) ){
-        const node = Tree.fromSchema( { "type": "null" } )
-        const rawNode = node.get()
+  it( 'createState', () => {
+    const createStateModule = api => {
+      const { createState } = api
 
-        return { node: rawNode, parent: null, root: rawNode }
+      return {
+        $createState: value => {
+          if( is.undefined( value ) ){
+            const node = api.fromSchema( { "type": "null" } )
+            const rawNode = node.get()
+
+            return { node: rawNode, parent: null, root: rawNode }
+          }
+
+          return createState( value )
+        }
       }
     }
 
-    const Tree = Factory( { stateParsers: [ parser ] } )
+    const Tree = Factory( createStateModule )
 
     const tree = Tree()
 
