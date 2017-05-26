@@ -1,6 +1,6 @@
 {
   "name": "@mojule/schema-tree",
-  "version": "0.4.6",
+  "version": "0.4.7",
   "description": "Tree API over JSON Schema",
   "main": "index.js",
   "scripts": {
@@ -32,7 +32,7 @@
   },
   "dependencies": {
     "@mojule/is": "^0.1.2",
-    "@mojule/tree": "^0.6.6",
-    "@mojule/utils": "^0.1.11"
+    "@mojule/tree": "^0.6.7",
+    "@mojule/utils": "^0.1.13"
   }
 }
