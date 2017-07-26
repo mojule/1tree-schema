@@ -1,29 +1,29 @@
 'use strict'
 
-// see comment in fromSchema
+const utils = require( '@mojule/utils' )
+
+const { clone } = utils
 
 const valueMapper = node => {
-  const value = node.value()
+  const schema = clone( node.value )
 
-  const schema = Object.assign( {}, value )
-
-  if( value.type === 'union' ){
-    schema.type = value.typesUnion
+  if( schema.type === 'union' ){
+    schema.type = schema.typesUnion
 
     delete schema.typesUnion
-  } else if( value.type === 'any' ){
+  } else if( schema.type === 'any' ){
     delete schema.type
   }
 
   return schema
 }
 
-const deleteFromValue = ( node, propertyName ) => {
-  const value = node.value()
+const removeProperty = ( node, propertyName ) => {
+  const value = node.value[ propertyName ]
 
-  delete value[ propertyName ]
+  delete node.value[ propertyName ]
 
-  node.value( value )
+  return value
 }
 
 const propertyPopulators = {
@@ -31,10 +31,7 @@ const propertyPopulators = {
     if( typeof schema.properties !== 'object' )
       schema.properties = {}
 
-    const value = node.value()
-    const { propertyName } = value
-
-    deleteFromValue( node, 'propertyName' )
+    const propertyName = removeProperty( node, 'propertyName' )
 
     schema.properties[ propertyName ] = toSchema( node )
   },
@@ -42,20 +39,17 @@ const propertyPopulators = {
     if( typeof schema.patternProperties !== 'object' )
       schema.patternProperties = {}
 
-    const value = node.value()
-    const pattern = value.propertyPattern
-
-    deleteFromValue( node, 'propertyPattern' )
+    const pattern = removeProperty( node, 'propertyPattern' )
 
     schema.patternProperties[ pattern ] = toSchema( node )
   },
   additionalPropertiesSchema: ( node, schema ) => {
-    deleteFromValue( node, 'additionalPropertiesSchema' )
+    removeProperty( node, 'additionalPropertiesSchema' )
 
     schema.additionalProperties = toSchema( node )
   },
   arrayItem: ( node, schema ) => {
-    deleteFromValue( node, 'arrayItem' )
+    removeProperty( node, 'arrayItem' )
 
     schema.items = toSchema( node )
   },
@@ -63,10 +57,7 @@ const propertyPopulators = {
     if( !Array.isArray( schema.items ))
       schema.items = []
 
-    const value = node.value()
-    const { arrayIndex } = value
-
-    deleteFromValue( node, 'arrayIndex' )
+    const arrayIndex = removeProperty( node, 'arrayIndex' )
 
     schema.items[ arrayIndex ] = toSchema( node )
   },
@@ -74,7 +65,7 @@ const propertyPopulators = {
     if( !Array.isArray( schema.anyOf ))
       schema.anyOf = []
 
-    deleteFromValue( node, 'anyOf' )
+    removeProperty( node, 'anyOf' )
 
     const childSchema = toSchema( node )
 
@@ -84,7 +75,7 @@ const propertyPopulators = {
     if( !Array.isArray( schema.allOf ))
       schema.allOf = []
 
-    deleteFromValue( node, 'allOf' )
+    removeProperty( node, 'allOf' )
 
     const childSchema = toSchema( node )
 
@@ -94,14 +85,14 @@ const propertyPopulators = {
     if( !Array.isArray( schema.oneOf ))
       schema.oneOf = []
 
-    deleteFromValue( node, 'oneOf' )
+    removeProperty( node, 'oneOf' )
 
     const childSchema = toSchema( node )
 
     schema.oneOf.push( childSchema )
   },
   not: ( node, schema ) => {
-    deleteFromValue( node, 'not' )
+    removeProperty( node, 'not' )
 
     schema.not = toSchema( node )
   }
@@ -112,11 +103,8 @@ const populatorProperties = Object.keys( propertyPopulators )
 const nestingMapper = node => {
   const schema = valueMapper( node )
 
-  const children = node.getChildren()
-
-  children.forEach( childNode => {
-    const value = childNode.value()
-
+  node.childNodes.forEach( childNode => {
+    const { value } = childNode
     const populateFor = populatorProperties.filter( propertyName => propertyName in value )
 
     populateFor.forEach( propertyName => {
@@ -144,17 +132,18 @@ const valueMappers = {
 const toSchema = node => {
   node = node.clone()
 
-  const value = node.value()
+  const { value } = node
+
+  delete value.nodeType
+
   const schemaType = value.type
   const mapper = valueMappers[ schemaType ]
 
   return mapper( node )
 }
 
-const toSchemaPlugin = node => {
-  return {
-    toSchema: () => toSchema( node )
-  }
+const toSchemaPlugin = ({ api, state, core }) => {
+  api.toSchema = () => toSchema( api )
 }
 
 module.exports = toSchemaPlugin

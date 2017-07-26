@@ -1,10 +1,7 @@
 'use strict'
 
-const createState = require( './create-state' )
-const isValue = require( './isValue' )
-const fromSchema = require( './fromSchema' )
-const toSchema = require( './toSchema' )
-const nodeType = require( './nodeType' )
-const slug = require( './slug' )
+const api = require( './api' )
+const core = require( './core' )
+const statics = require( './statics' )
 
-module.exports = [ createState, isValue, fromSchema, toSchema, nodeType, slug ]
+module.exports = { api, core, statics }

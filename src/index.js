@@ -1,12 +1,8 @@
 'use strict'
 
-const is = require( '@mojule/is' )
-const TreeFactory = require( '@mojule/tree' ).Factory
-const FactoryFactory = require( '@mojule/tree' ).FactoryFactory
-const defaultPlugins = require( './plugins' )
-const Factory = FactoryFactory( TreeFactory, defaultPlugins )
-const SchemaTree = Factory()
+const { Factory } = require( '@mojule/tree' )
+const plugins = require( './plugins' )
 
-Object.assign( SchemaTree, { Factory } )
+const SchemaTree = Factory( plugins )
 
 module.exports = SchemaTree

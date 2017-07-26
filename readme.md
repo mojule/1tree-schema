@@ -12,13 +12,13 @@ Use [tree](https://github.com/mojule/tree) API over JSON Schema
 const SchemaTree = require( '@mojule/schema-tree' )
 const jsonSchema = require( './test.schema.json' )
 
-const tree = SchemaTree( jsonSchema )
+const tree = SchemaTree.fromSchema( jsonSchema )
 
-const integerNodes = tree.findAll( n => n.nodeType() === 'integer' )
+const integerNodes = tree.subNodes.filter( n =>
+  n.nodeType === SchemaTree.INTEGER_NODE
+)
 
-integerNodes.forEach( n => {
-  n.setValue( 'minimum', 1 )
-})
+integerNodes.forEach( n => n.value.minimum = 1 )
 
 const newSchema = tree.toSchema()
 

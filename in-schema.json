@@ -1,0 +1,105 @@
+{
+  "id": "document",
+  "type": "object",
+  "properties": {
+    "title": {
+      "$ref": "nonEmptyString"
+    },
+    "headStyles": {
+      "type": "array",
+      "items": {
+        "$ref": "style"
+      }
+    },
+    "headScripts": {
+      "type": "array",
+      "items": {
+        "$ref": "script"
+      }
+    },
+    "scripts": {
+      "type": "array",
+      "items": {
+        "$ref": "script"
+      }
+    },
+    "arrTest": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "arrTest2": {
+      "type": "array",
+      "items": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "number"
+        }
+      ]
+    },
+    "multiTypes": {
+      "type": [
+        "object",
+        "array"
+      ],
+      "items": {
+        "type": "string"
+      },
+      "properties": {
+        "foo": {
+          "type": "string"
+        }
+      }
+    },
+    "isCool": {
+      "type": "boolean"
+    },
+    "hasAdditionalProperties": {
+      "type": "object",
+      "properties": {
+        "number": {
+          "type": "number"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": {
+    "type": "string"
+  },
+  "patternProperties": {
+    "^S_": {
+      "type": "string"
+    },
+    "^I_": {
+      "type": "integer"
+    }
+  },
+  "not": {
+    "type": "null"
+  },
+  "allOf": [
+    {
+      "type": "object"
+    },
+    {}
+  ],
+  "anyOf": [
+    {
+      "type": "object"
+    },
+    {}
+  ],
+  "oneOf": [
+    {
+      "type": "object"
+    },
+    {}
+  ],
+  "required": [
+    "title"
+  ]
+}

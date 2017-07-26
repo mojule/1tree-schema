@@ -10,99 +10,33 @@ const SchemaTree = require( '../src' )
 
 describe( 'tree/schema conversion', () => {
   it( 'round trips conversion', () => {
-    const schemaTree = SchemaTree( testSchema )
+    const schemaTree = SchemaTree.fromSchema( testSchema )
     const schema = schemaTree.toSchema()
+
+    const fs = require( 'fs' )
 
     assert.deepEqual( schema, testSchema )
   })
 })
 
-describe( 'Bad data', () => {
-  it( 'Bad nodeType', () => {
-    const badNode = SchemaTree( { nodeType: 'nope' } )
-
-    assert.throws( () => badNode.toSchema() )
-  })
-
-  it( 'No value', () => {
-    assert.throws( () => SchemaTree() )
-  })
-
-  it( 'Has definitions', () => {
-    assert.throws( () => SchemaTree( definitionsFailSchema ) )
-  })
-
-  it( 'Has dependencies', () => {
-    assert.throws( () => SchemaTree( dependenciesFailSchema ) )
-  })
-})
-
-describe( 'Plugins', () => {
+describe( 'API', () => {
   it( 'Slug', () => {
-    const schemaTree = SchemaTree( testSchema )
+    const schemaTree = SchemaTree.fromSchema( testSchema )
 
-    const titleNode = schemaTree.find( current =>
-      current !== schemaTree && current.getParent().nodeType() === 'object' &&
-      current.getValue( 'propertyName' ) === 'title'
+    const titleNode = schemaTree.subNodes.find( current =>
+      current !== schemaTree &&
+      current.parentNode.nodeType === SchemaTree.OBJECT_NODE &&
+      current.value.propertyName === 'title'
     )
 
-    const arrayItemNode = schemaTree.find( current =>
-      is.number( current.getValue( 'arrayIndex' ) )
+    const arrayItemNode = schemaTree.subNodes.find( current =>
+      is.number( current.value.arrayIndex )
     )
 
-    const index = String( arrayItemNode.getValue( 'arrayIndex' ) )
+    const index = String( arrayItemNode.value.arrayIndex )
 
     assert.equal( schemaTree.slug(), '' )
     assert.equal( titleNode.slug(), 'title' )
     assert.equal( arrayItemNode.slug(), index )
-  })
-})
-
-describe( 'Factory', () => {
-  const Factory = SchemaTree.Factory
-
-  it( 'Can override options', () => {
-    const Tree = Factory( { exposeState: true } )
-
-    const tree = Tree( {} )
-
-    assert( is.object( tree.state ) )
-  })
-
-  it( 'Takes plugins as an array', () => {
-    const plugin = () => ({
-      x: () => 'x'
-    })
-
-    const Tree = Factory( [ plugin ] )
-
-    const tree = Tree( {} )
-
-    assert.equal( tree.x(), 'x' )
-  })
-
-  it( 'createState', () => {
-    const createStateModule = api => {
-      const { createState } = api
-
-      return {
-        $createState: value => {
-          if( is.undefined( value ) ){
-            const node = api.fromSchema( { "type": "null" } )
-            const rawNode = node.get()
-
-            return { node: rawNode, parent: null, root: rawNode }
-          }
-
-          return createState( value )
-        }
-      }
-    }
-
-    const Tree = Factory( createStateModule )
-
-    const tree = Tree()
-
-    assert.equal( tree.nodeType(), 'null' )
   })
 })
